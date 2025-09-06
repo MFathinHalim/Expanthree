@@ -1,103 +1,156 @@
-import Image from "next/image";
+"use client"
+import { motion, useMotionValue, useSpring } from "framer-motion";
+
+function HoverCard() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // biar gerakan lebih halus, kita kasih spring
+  const smoothX = useSpring(x, { stiffness: 150, damping: 20 });
+  const smoothY = useSpring(y, { stiffness: 150, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { offsetX, offsetY } = e.nativeEvent as MouseEvent & {
+      offsetX: number;
+      offsetY: number;
+    };
+    const target = e.currentTarget;
+    const { offsetWidth, offsetHeight } = target;
+
+    const moveX = (offsetX / offsetWidth - 0.5) * 40; // max 40px
+    const moveY = (offsetY / offsetHeight - 0.5) * 40;
+
+    x.set(moveX);
+    y.set(moveY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      className="flex-1 h-130 hover:scale-110 transition-scale duration-300 bg-[#EDDCCE] rounded-lg"
+      style={{ x: smoothX, y: smoothY }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    />
+  );
+}
+
+function HoverFollowCards() {
+  return (
+    <section className="hidden md:block my-10 w-full md:max-w-2/3">
+      <div className="flex flex-col md:flex-row gap-6">
+        {[0, 1, 2].map((i) => (
+          <HoverCard key={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+interface Member {
+  name: string;
+  role: string;
+  photo: string;
+}
+
+const members: Member[] = [
+  { name: "Mahiru Shiina", role: "Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mahiru Shiina", role: "Wakil Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mahiru Shiina", role: "Bendahara 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mahiru Shiina", role: "Bendahara 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mahiru Shiina", role: "Sekretaris 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mahiru Shiina", role: "Sekretaris 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+];
+
+
+function MemberCard({ name, role, photo }: Member) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      className="bg-[#EDDCCE] rounded-xl p-2 md:p-4 flex items-center gap-4 w-full md:max-w-2/3"
+    >
+      <img
+        src={photo}
+        alt={name}
+        className="w-20 h-20 border ml-3 mr-1 my-3 object-cover rounded-full"
+      />
+      <div>
+        <p className="text-2xl text-gray-500">{role}</p>
+        <h3 className="text-4xl font-semibold">{name}</h3>
+      </div>
+    </motion.div>
+  );
+}
+
+function ClassStructure() {
+  return (
+    <section className="my-6 px-4 md:px-0 w-full flex flex-col items-center">
+      <h2 className="text-5xl md:text-6xl font-bold text-center mb-8">Struktur Kelas</h2>
+      <div className="flex flex-col gap-4 w-full items-center">
+        {members.map((member, i) => (
+          <MemberCard key={i} {...member} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <header className="relative md:py-3">
+        <div className="relative">
+          <img
+            src="/Images/blur.png"
+            alt="Background blur"
+  className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-1/3 max-w-xs opacity-50 -z-10 pointer-events-none"
+          />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          <h2 className="text-3xl text-center md:text-5xl font-bold uppercase">
+            Welcome To
+          </h2>
+          <h1 className="text-5xl text-center md:text-7xl font-bold uppercase">
+            Expanthree
+          </h1>
+          <p className="text-xl text-center mt-2">
+            Satukan Langkah, Ukir Sejarah
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <img
+          src="/Images/jumbotron_homepage.png"
+          alt="Logo"
+          className="mx-auto mt-4 w-full md:max-w-2/3 h-auto"
+        />
+      </header>
+
+      <div className="flex flex-col items-center">
+        <section className="my-6 px-4 md:px-0 bg-[#F3E9E1] w-full md:max-w-2/3">
+          <h2 className="text-3xl font-bold mb-3">so... what is expanthree?</h2>
+          <p className="text-xl leading-relaxed">
+            Wali kelas: Laili Rosa S.Pd
+            <br />
+            <br />
+            Expanthree adalah identitas kebersamaan dari kelas 10.3 SMAN 1 Rejang Lebong tahun ajaran 2025/2026. 
+            <br/>
+            <br />
+            Melalui berbagai kegiatan belajar, proyek kelas, hingga momen seru di luar pelajaran, kami membangun cerita dan kenangan yang tak terlupakan sebagai satu keluarga besar. 
+            <br/>
+            <br />
+            Expanthree hadir sebagai bukti semangat kolaboratif dan semaraknya masa putih abu-abu di SMANSA Rejang Lebong.
+          </p>
+        </section>
+        <HoverFollowCards />
+        <ClassStructure />
+
+        <a><h1 className="bg-[#EDDCCE] hover:bg-[#FDDCC3] cursor-pointer font-bold p-5 px-8 text-2xl border border-gray-500">Check Out Our Gallery</h1></a>
+      </div>
+    </>
   );
 }

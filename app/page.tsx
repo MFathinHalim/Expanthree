@@ -1,4 +1,5 @@
 "use client"
+import MemberCard from "@/components/MemberCard";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 function HoverCard() {
@@ -31,7 +32,7 @@ function HoverCard() {
 
   return (
     <motion.div
-      className="flex-1 h-130 hover:scale-110 transition-scale duration-300 bg-[#EDDCCE] rounded-lg"
+      className="flex-1 h-50 hover:scale-110 transition-scale duration-300 bg-[#EDDCCE] rounded-lg"
       style={{ x: smoothX, y: smoothY }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -58,34 +59,13 @@ interface Member {
 }
 
 const members: Member[] = [
-  { name: "Mahiru Shiina", role: "Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
-  { name: "Mahiru Shiina", role: "Wakil Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
-  { name: "Mahiru Shiina", role: "Bendahara 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
-  { name: "Mahiru Shiina", role: "Bendahara 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
-  { name: "Mahiru Shiina", role: "Sekretaris 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
-  { name: "Mahiru Shiina", role: "Sekretaris 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "M. Okta Nugraha", role: "Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Yuda Prawira Rajapati", role: "Wakil Ketua Kelas", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Mufidah Naifah", role: "Bendahara 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Najla Zeta Khairunisa", role: "Bendahara 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Olivia Br Manulang", role: "Sekretaris 1", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
+  { name: "Santri Nafizah Azzahra", role: "Sekretaris 2", photo: "https://i.pinimg.com/736x/1b/36/72/1b367299ed593625c53ea3630d55acbf.jpg" },
 ];
-
-
-function MemberCard({ name, role, photo }: Member) {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 200, damping: 15 }}
-      className="bg-[#EDDCCE] rounded-xl p-2 md:p-4 flex items-center gap-4 w-full md:max-w-2/3"
-    >
-      <img
-        src={photo}
-        alt={name}
-        className="w-20 h-20 border ml-3 mr-1 my-3 object-cover rounded-full"
-      />
-      <div>
-        <p className="text-2xl text-gray-500">{role}</p>
-        <h3 className="text-4xl font-semibold">{name}</h3>
-      </div>
-    </motion.div>
-  );
-}
 
 function ClassStructure() {
   return (

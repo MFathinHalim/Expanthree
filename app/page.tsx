@@ -5,7 +5,6 @@ function HoverCard() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // biar gerakan lebih halus, kita kasih spring
   const smoothX = useSpring(x, { stiffness: 150, damping: 20 });
   const smoothY = useSpring(y, { stiffness: 150, damping: 20 });
 
